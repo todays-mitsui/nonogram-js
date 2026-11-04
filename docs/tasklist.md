@@ -45,9 +45,9 @@
 
 - [x] リポジトリ初期化(git、TypeScript 6.0、Vite 8、Vitest 5、ESLint 10 / Prettier、Preact、LICENSE(MIT))
 - [ ] `src/i18n/ja.ts`: UI 文言の置き場所
-- [ ] GitHub Actions: テスト + GitHub Pages へのデプロイ(テストが通ったときだけデプロイ)
+- [x] GitHub Actions: テスト + GitHub Pages へのデプロイ(テストが通ったときだけデプロイ)
 - [ ] 古いメジャーバージョンの `player.js` をデプロイ成果物に残す仕組み(v2 を出す前に用意する)
-- [ ] `core/grid.ts`: `Grid<T>`(座標、ラインの取り出し、リサイズ)
+- [x] `core/grid.ts`: `Grid<T>`(座標、ラインの取り出し、リサイズ)
 - [ ] `core/format.ts`: `encodeSolution` / `decodeSolution`
   - [ ] FORMAT.md の例2つをテストケースにする
   - [ ] 不正条件をすべてテストする
