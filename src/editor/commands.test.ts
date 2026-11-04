@@ -120,3 +120,37 @@ describe('EditorHistory', () => {
     expect(history.canUndo).toBe(false)
   })
 })
+
+describe('drawRows と行文字列', () => {
+  it('左上を指定して書き込み、- は変えない', async () => {
+    const { drawRows } = await import('./commands')
+    const { toRows } = await import('./rows')
+    let doc = addColor(newDoc(), '#f00')
+    doc = drawRows(doc, 1, 1, ['11.2', '-1-'])
+    doc = drawRows(doc, 1, 2, ['2-'])
+    expect(toRows(visibleGrid(doc.solution)).slice(0, 3)).toEqual([
+      '...............',
+      '.11.2..........',
+      '.21............',
+    ])
+  })
+
+  it('はみ出し・未知の文字・パレットにない色は何も変えずにエラー', async () => {
+    const { drawRows } = await import('./commands')
+    const doc = newDoc()
+    expect(() => drawRows(doc, 14, 0, ['11'])).toThrow(EditorCommandError)
+    expect(() => drawRows(doc, 0, 14, ['1', '1'])).toThrow(EditorCommandError)
+    expect(() => drawRows(doc, 0, 0, ['1x'])).toThrow(/"x" is not a row character/)
+    expect(() => drawRows(doc, 0, 0, ['2'])).toThrow(/color 2 is not in the palette/)
+    expect(() => drawRows(doc, -1, 0, ['1'])).toThrow(EditorCommandError)
+  })
+
+  it('色16 は g', async () => {
+    const { drawRows } = await import('./commands')
+    const { toRows } = await import('./rows')
+    let doc = newDoc()
+    for (let i = 1; i < 16; i++) doc = addColor(doc, '#123')
+    doc = drawRows(doc, 0, 0, ['9ag'])
+    expect(toRows(visibleGrid(doc.solution))[0]?.slice(0, 3)).toBe('9ag')
+  })
+})

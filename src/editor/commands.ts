@@ -5,6 +5,7 @@
  */
 
 import type { Point } from '../core/grid'
+import { KEEP, parseRows, RowsError } from './rows'
 import { isPaletteColor, type Palette, type PaletteColor } from '../core/palette'
 import {
   EMPTY,
@@ -114,6 +115,36 @@ export function paintCells(
     }
   }
   const grid = doc.solution.grid.setMany(points.map(({ x, y }) => ({ x, y, value })))
+  if (grid === doc.solution.grid) return doc
+  return { ...doc, solution: trimToExtent({ grid, frame }) }
+}
+
+/**
+ * 行文字列(rows.ts)を `(x, y)` を左上として書き込む。`-` のマスは変えない。
+ * 可視領域からはみ出したら、何も変えずにエラー。
+ */
+export function drawRows(doc: EditorDoc, x: number, y: number, rows: readonly string[]): EditorDoc {
+  const { frame } = doc.solution
+  if (!Number.isInteger(x) || !Number.isInteger(y) || x < 0 || y < 0) {
+    throw new EditorCommandError(`(${x}, ${y}) must be non-negative integers`)
+  }
+  let cells
+  try {
+    cells = parseRows(rows, doc.palette.length)
+  } catch (error) {
+    if (error instanceof RowsError) throw new EditorCommandError(error.message)
+    throw error
+  }
+  const width = Math.max(0, ...cells.map((row) => row.length))
+  if (x + width > frame.width || y + cells.length > frame.height) {
+    throw new EditorCommandError(
+      `a ${width}x${cells.length} block at (${x}, ${y}) does not fit in the ${frame.width}x${frame.height} frame`,
+    )
+  }
+  const updates = cells.flatMap((row, dy) =>
+    row.flatMap((value, dx) => (value === KEEP ? [] : [{ x: x + dx, y: y + dy, value }])),
+  )
+  const grid = doc.solution.grid.setMany(updates)
   if (grid === doc.solution.grid) return doc
   return { ...doc, solution: trimToExtent({ grid, frame }) }
 }
