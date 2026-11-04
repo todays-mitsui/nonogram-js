@@ -14,6 +14,7 @@ export default defineConfig({
       input: {
         index: resolve(import.meta.dirname, 'index.html'),
         editor: resolve(import.meta.dirname, 'editor/index.html'),
+        demo: resolve(import.meta.dirname, 'demo/index.html'),
       },
     },
   },

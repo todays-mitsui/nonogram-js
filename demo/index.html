@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ノノグラム デモ</title>
+    <style>
+      body {
+        margin: 0;
+        background: #f3f2ef;
+        color: #1f1f1e;
+        font-family:
+          system-ui,
+          -apple-system,
+          'Hiragino Sans',
+          'Noto Sans JP',
+          sans-serif;
+        line-height: 1.7;
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #141517;
+          color: #ececea;
+        }
+      }
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 24px 16px 64px;
+      }
+      h2 {
+        margin-top: 48px;
+        font-size: 18px;
+      }
+      code {
+        font-size: 13px;
+      }
+      /* ブログテーマの雑な一括スタイルの例。Shadow DOM の中には効かないはず */
+      button,
+      canvas,
+      p {
+        all: revert;
+      }
+      img,
+      canvas {
+        max-width: 100%;
+        border: 4px dashed red;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>ノノグラム デモ</h1>
+      <p>
+        手書きの埋め込みタグを置いたページ。仕様は
+        <a href="https://github.com/todays-mitsui/nonogram-js/blob/main/docs/spec/EMBED.md"
+          >EMBED.md</a
+        >。
+      </p>
+
+      <h2>モノクロ問題(10x10、正方形)</h2>
+      <div
+        class="todays-mitsui__nonogram"
+        data-solution="v2;10x10;10x10;#222;Y2BkZAACIMnICGIyEgRwJQww1QwMUCYDA5TJgAIA"
+      >
+        ここにノノグラム(パズル)があります。JavaScript が動く環境で開くと遊べます。
+      </div>
+      <script src="../player/v1/player.js" defer></script>
+
+      <h2>カラー問題(10x10、3色、縦長)</h2>
+      <div
+        class="todays-mitsui__nonogram"
+        data-solution="v2;10x10;10x10;#D23F31;#3C8D2F;#7A4B24;Y2AAAmYGJiYGMGCGMBgZGZmBGMwAA0IsBjgDxGSAsqAAAA"
+        data-aspect-ratio="3:4"
+      >
+        ここにノノグラム(パズル)があります。JavaScript が動く環境で開くと遊べます。
+      </div>
+      <script src="../player/v1/player.js" defer></script>
+
+      <h2>大きな問題(30x30、横長)</h2>
+      <p>狭い画面では cellSize が下限(16px)を割り、キャンバスの中でスクロールする。</p>
+      <div
+        class="todays-mitsui__nonogram"
+        data-solution="v2;30x30;30x30;#2B4C7E;hZNRDsAgDELh_pfekumGpWUm-tM8QFtBEmHnhXEx8bjBVH2OXvarWlqttrLb18RZWFha9YXJFrbKqu-bHAN7pi2-C59ZgNE3sUpVX7vR9Fbum97q7IL1t-kgNa1u9Y2Tk6cuVedpx-9fCZ_sAg"
+        data-aspect-ratio="4:3"
+      ></div>
+
+      <h2>エラー: 正解図コードが壊れている</h2>
+      <div class="todays-mitsui__nonogram" data-solution="v2;10x10;10x10;#222;Y2BkZAAC"></div>
+
+      <h2>エラー: 未知の data-mode</h2>
+      <div
+        class="todays-mitsui__nonogram"
+        data-solution="v2;10x10;10x10;#222;Y2BkZAACIMnICGIyEgRwJQww1QwMUCYDA5TJgAIA"
+        data-mode="viewer"
+      ></div>
+
+      <h2>後から追加される埋め込み要素</h2>
+      <p><button type="button" id="add">パズルを追加する</button></p>
+      <div id="later"></div>
+      <script>
+        document.getElementById('add').addEventListener('click', () => {
+          const el = document.createElement('div')
+          el.className = 'todays-mitsui__nonogram'
+          el.dataset.solution = 'v2;10x10;10x10;#222;Y2BkZAACIMnICGIyEgRwJQww1QwMUCYDA5TJgAIA'
+          document.getElementById('later').append(el)
+        })
+      </script>
+    </main>
+  </body>
+</html>
