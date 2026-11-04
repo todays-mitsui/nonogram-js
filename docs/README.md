@@ -368,7 +368,7 @@ src/
   editor/    エディタのアプリ(Preact)
     commands.ts    状態を変えるコマンド(UI と WebMCP で共有、アンドゥの単位)
     webmcp.ts      WebMCP のツール登録
-docks/       ドキュメント
+docs/        ドキュメント
 ```
 
 ---
