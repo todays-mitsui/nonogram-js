@@ -36,6 +36,7 @@ export function registerWebMcpTools(editor: Editor): (() => void) | null {
     get workName() {
       return editor.work.value?.name ?? null
     },
+    checkUniqueness: () => editor.checkUniqueness(),
   }
 
   const controller = new AbortController()

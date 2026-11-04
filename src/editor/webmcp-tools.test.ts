@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest'
+import { Grid } from '../core/grid'
+import { EMPTY, type SolutionCell } from '../core/solution'
 import { newDoc, type EditorDoc } from './commands'
 import { EditorHistory } from './history'
 import { createTools, type EditorApi } from './webmcp-tools'
@@ -26,6 +28,13 @@ function setup() {
     },
     aspectRatio: '3:4',
     workName: 'テスト',
+    checkUniqueness: async () => ({
+      kind: 'multiple',
+      alternative: Grid.fromRows<SolutionCell>([
+        [0, EMPTY],
+        [EMPTY, 0],
+      ]),
+    }),
   }
   const tools = new Map(createTools(api).map((t) => [t.name, t]))
   const call = async (name: string, input: Record<string, unknown> = {}) => {
@@ -51,6 +60,7 @@ describe('WebMCP のツール', () => {
       'clear',
       'import_code',
       'export_embed_tag',
+      'check_uniqueness',
       'undo',
       'redo',
     ])
@@ -153,5 +163,14 @@ describe('WebMCP のツール', () => {
     expect(result.solution_code).toMatch(/^v2;15x15;15x15;#000;/)
     expect((await call('export_embed_tag', { aspect_ratio: '4:3' })).aspect_ratio).toBe('4:3')
     await expect(call('export_embed_tag', { aspect_ratio: '16:9' })).rejects.toThrow()
+  })
+
+  it('check_uniqueness は別解を行文字列で返す', async () => {
+    const { call, tools } = setup()
+    expect(await call('check_uniqueness')).toEqual({
+      result: 'multiple_solutions',
+      alternative_rows: ['1.', '.1'],
+    })
+    expect(tools.get('check_uniqueness')?.annotations).toEqual({ readOnlyHint: true })
   })
 })

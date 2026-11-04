@@ -9,9 +9,16 @@ import type { AspectRatio } from '../player/widget'
 import { newDoc, type EditorDoc } from './commands'
 import { encodeDoc, fromHash, importText, toHash } from './exchange'
 import { EditorHistory } from './history'
+import { UniquenessChecker, type Uniqueness } from './uniqueness'
 import type { WorkMeta, WorkStore } from './works'
 
 const SAVE_DELAY_MS = 300
+const CHECK_DELAY_MS = 500
+
+export type UniquenessState =
+  | { readonly status: 'checking' }
+  | { readonly status: 'done'; readonly result: Uniqueness }
+  | { readonly status: 'error' }
 
 export type Editor = ReturnType<typeof createEditor>
 
@@ -23,6 +30,28 @@ export function createEditor(store: WorkStore) {
   const workId = signal<string | null>(null)
   const works = signal<WorkMeta[]>(store.list())
   const notice = signal<string | null>(null)
+  const uniqueness = signal<UniquenessState>({ status: 'checking' })
+  const checker = new UniquenessChecker()
+  let checkTimer: ReturnType<typeof setTimeout> | undefined
+  /** 一意解チェック。描くたびに前の判定は止める。結果は uniqueness に出す。 */
+  function checkUniqueness(): Promise<Uniqueness> {
+    clearTimeout(checkTimer)
+    uniqueness.value = { status: 'checking' }
+    const promise = checker.check(history.doc)
+    promise.then(
+      (result) => (uniqueness.value = { status: 'done', result }),
+      (reason) => {
+        if (reason !== 'cancelled') uniqueness.value = { status: 'error' }
+      },
+    )
+    return promise
+  }
+  const scheduleCheck = () => {
+    clearTimeout(checkTimer)
+    checker.cancel()
+    uniqueness.value = { status: 'checking' }
+    checkTimer = setTimeout(() => void checkUniqueness().catch(() => {}), CHECK_DELAY_MS)
+  }
 
   const work = computed(() => {
     void revision.value
@@ -45,6 +74,7 @@ export function createEditor(store: WorkStore) {
     }
     clearTimeout(saveTimer)
     saveTimer = setTimeout(() => void save(), SAVE_DELAY_MS)
+    scheduleCheck()
   })
 
   async function save(): Promise<void> {
@@ -137,6 +167,8 @@ export function createEditor(store: WorkStore) {
   }
 
   return {
+    uniqueness,
+    checkUniqueness,
     history,
     store,
     doc,

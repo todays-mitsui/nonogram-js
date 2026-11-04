@@ -26,6 +26,7 @@ import {
 } from './commands'
 import { exportCode, exportEmbedTag } from './exchange'
 import { toRows } from './rows'
+import type { Uniqueness } from './uniqueness'
 
 /** ツールが触るエディタの機能。 */
 export interface EditorApi {
@@ -40,6 +41,8 @@ export interface EditorApi {
   importAsNewWork(text: string): Promise<string | null>
   readonly aspectRatio: AspectRatio
   readonly workName: string | null
+  /** 一意解チェック。UI と同じ判定(Web Worker、時間制限つき)。 */
+  checkUniqueness(): Promise<Uniqueness>
 }
 
 export interface ToolDefinition {
@@ -272,6 +275,28 @@ export function createTools(api: EditorApi): ToolDefinition[] {
           solution_code: await exportCode(api.doc),
           aspect_ratio: ratio,
         })
+      },
+    },
+    {
+      name: 'check_uniqueness',
+      title: 'Check that the puzzle has one solution',
+      description:
+        'Solves the puzzle from its clues alone. Results: "line_solvable" (each line can be deduced in turn, the friendliest kind of puzzle), "needs_guessing" (one solution, but a solver has to try guesses), "multiple_solutions" (another picture has the same clues; it is returned as alternative_rows), or "timed_out". Exporting is allowed in every case.',
+      inputSchema: { type: 'object', properties: {} },
+      annotations: { readOnlyHint: true },
+      execute: async () => {
+        const result = await api.checkUniqueness()
+        const name = {
+          'line-solvable': 'line_solvable',
+          'needs-guessing': 'needs_guessing',
+          multiple: 'multiple_solutions',
+          'timed-out': 'timed_out',
+        }[result.kind]
+        return JSON.stringify(
+          result.kind === 'multiple'
+            ? { result: name, alternative_rows: toRows(result.alternative) }
+            : { result: name },
+        )
       },
     },
     {

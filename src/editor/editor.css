@@ -361,3 +361,28 @@ dialog::backdrop {
   display: flex;
   flex-direction: column;
 }
+
+.uniqueness {
+  margin: 0;
+  font-weight: 600;
+}
+.uniqueness.ok {
+  color: #1e7a3a;
+}
+.uniqueness.warn {
+  color: var(--danger);
+}
+@media (prefers-color-scheme: dark) {
+  .uniqueness.ok {
+    color: #6fcf8f;
+  }
+}
+.alternative {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.alternative canvas {
+  display: block;
+  max-width: 100%;
+}

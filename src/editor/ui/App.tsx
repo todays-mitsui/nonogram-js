@@ -5,6 +5,7 @@ import { TestPlayDialog, WorksDialog } from './Dialogs'
 import { EditorCanvas } from './EditorCanvas'
 import { ExportPanel, ImportPanel, PalettePanel, SizePanel } from './Panels'
 import { Toolbar } from './Toolbar'
+import { UniquenessPanel } from './Uniqueness'
 
 export function App({ editor }: { editor: Editor }) {
   const worksOpen = useSignal(false)
@@ -52,6 +53,7 @@ export function App({ editor }: { editor: Editor }) {
         <aside class="sidebar">
           <SizePanel editor={editor} />
           <PalettePanel editor={editor} />
+          <UniquenessPanel editor={editor} />
           <ExportPanel editor={editor} onTestPlay={() => (testPlayOpen.value = true)} />
           <ImportPanel editor={editor} />
         </aside>
