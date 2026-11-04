@@ -43,7 +43,7 @@
 
 ## Phase 1: 基盤
 
-- [ ] リポジトリ初期化(git、TypeScript、Vite、Vitest、ESLint/Prettier、LICENSE(MIT))
+- [x] リポジトリ初期化(git、TypeScript 6.0、Vite 8、Vitest 5、ESLint 10 / Prettier、Preact、LICENSE(MIT))
 - [ ] `src/i18n/ja.ts`: UI 文言の置き場所
 - [ ] GitHub Actions: テスト + GitHub Pages へのデプロイ(テストが通ったときだけデプロイ)
 - [ ] 古いメジャーバージョンの `player.js` をデプロイ成果物に残す仕組み(v2 を出す前に用意する)

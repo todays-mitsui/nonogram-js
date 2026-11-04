@@ -350,7 +350,7 @@ GitHub Pages で公開する単独の Web アプリ。
 | 公開 | GitHub Actions で GitHub Pages にデプロイ | |
 | 対象ブラウザ | 直近2年の Chrome / Edge / Safari(iOS 含む)/ Firefox | `deflate-raw` は Safari 16.4 以降 |
 
-### 6.1 ディレクトリ構成(案)
+### 6.1 ディレクトリ構成
 
 ```
 src/
@@ -369,7 +369,15 @@ src/
     commands.ts    状態を変えるコマンド(UI と WebMCP で共有、アンドゥの単位)
     webmcp.ts      WebMCP のツール登録
 docs/        ドキュメント
+index.html   サイトのトップページ
+editor/
+  index.html エディタの HTML(/editor/)
+vite.config.ts         サイト(トップページ・エディタ)のビルドとテストの設定
+vite.player.config.ts  player.js のビルド設定(IIFE、dist/player/v1/player.js)
 ```
+
+- `npm run build` は型チェックのあと、サイトを `dist/` に、`player.js` を `dist/player/v1/` にビルドする
+- TypeScript は 6.0 系に留める。typescript-eslint が 7.0 にまだ対応していないため
 
 ---
 

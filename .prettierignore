@@ -1,0 +1,5 @@
+dist
+coverage
+package-lock.json
+# 仕様書は表を手で整えているので、Prettier に整形させない
+docs
