@@ -1,8 +1,15 @@
 import { render } from 'preact'
+import './editor.css'
+import { createEditor } from './store'
+import { App } from './ui/App'
+import { browserStorage, WorkStore } from './works'
 
-function App() {
-  return <p>エディタ(準備中)</p>
-}
-
+const editor = createEditor(new WorkStore(browserStorage()))
 const root = document.getElementById('app')
-if (root) render(<App />, root)
+
+void editor.start().then(() => {
+  if (root) render(<App editor={editor} />, root)
+})
+
+// 同じタブで別の共有 URL を開いたとき
+window.addEventListener('hashchange', () => void editor.start())
