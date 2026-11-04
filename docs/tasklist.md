@@ -48,11 +48,11 @@
 - [x] GitHub Actions: テスト + GitHub Pages へのデプロイ(テストが通ったときだけデプロイ)
 - [ ] 古いメジャーバージョンの `player.js` をデプロイ成果物に残す仕組み(v2 を出す前に用意する)
 - [x] `core/grid.ts`: `Grid<T>`(座標、ラインの取り出し、リサイズ)
-- [ ] `core/format.ts`: `encodeSolution` / `decodeSolution`
-  - [ ] FORMAT.md の例2つをテストケースにする
-  - [ ] 不正条件をすべてテストする
-  - [ ] エンコード時のデータ領域の切り詰め
-- [ ] `core/solution.ts`: `Solution`、`Extent` の計算、`crop`
+- [x] `core/format.ts`: `encodeSolution` / `decodeSolution`
+  - [x] FORMAT.md の例2つをテストケースにする
+  - [x] 不正条件をすべてテストする
+  - [x] エンコード時のデータ領域の切り詰め
+- [x] `core/solution.ts`: `Solution`、`Extent` の計算、`crop`
 - [ ] `core/clue.ts`: ヒントの導出(色付きブロック、空ライン = `[]`)、`satisfied` の判定
 - [ ] `core/tool.ts`: `Tool`、`nextMark`、`Stroke`(プレイモード / 作問モード両方)
 - [ ] `core/progress.ts`: `encodeProgress` / `decodeProgress`、`PuzzleId`
