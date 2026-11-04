@@ -10,6 +10,7 @@ import { availableTools, type Operation, type Tool } from '../core/tool'
 import type { Puzzle } from '../core/clue'
 import { player as t } from '../i18n/ja'
 import { draw, resizeCanvas } from '../render/draw'
+import { iconElement, REDO_ICON, UNDO_ICON } from '../render/icons'
 import { cellAt, cellAtUnclamped, clueEntryAt, computeLayout, type Layout } from '../render/layout'
 import { darkTheme, lightTheme } from '../render/theme'
 import { PlayerState, type Change } from './state'
@@ -78,18 +79,10 @@ export class Widget {
       this.#toolButtons.push({ tool, button })
       toolGroup.append(button)
     }
-    this.#undoButton = button(
-      t.toolbar.undo,
-      () => this.#state.undo(),
-      t.toolbar.undoLabel,
-      'symbol',
-    )
-    this.#redoButton = button(
-      t.toolbar.redo,
-      () => this.#state.redo(),
-      t.toolbar.redoLabel,
-      'symbol',
-    )
+    this.#undoButton = button(t.toolbar.undo, () => this.#state.undo(), t.toolbar.undoLabel)
+    this.#undoButton.prepend(iconElement(UNDO_ICON))
+    this.#redoButton = button(t.toolbar.redo, () => this.#state.redo(), t.toolbar.redoLabel)
+    this.#redoButton.prepend(iconElement(REDO_ICON))
     this.#gridButton = button(t.toolbar.gridLines, () => this.#state.toggleGridLines())
     this.#gridButton.setAttribute('aria-label', t.toolbar.gridLinesLabel)
     const resetButton = button(t.toolbar.reset, () => void this.#confirmReset())

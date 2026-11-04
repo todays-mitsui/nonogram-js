@@ -1,3 +1,4 @@
+import { REDO_ICON, UNDO_ICON } from '../../render/icons'
 import { displayNumber } from '../../core/palette'
 import { availableTools, type Tool } from '../../core/tool'
 import { player as t } from '../../i18n/ja'
@@ -41,20 +42,20 @@ export function Toolbar({ editor }: { editor: Editor }) {
       <div class="group">
         <button
           type="button"
-          class="symbol"
           aria-label={t.toolbar.undoLabel}
           disabled={!editor.canUndo.value}
           onClick={() => editor.history.undo()}
         >
+          <Icon paths={UNDO_ICON} />
           {t.toolbar.undo}
         </button>
         <button
           type="button"
-          class="symbol"
           aria-label={t.toolbar.redoLabel}
           disabled={!editor.canRedo.value}
           onClick={() => editor.history.redo()}
         >
+          <Icon paths={REDO_ICON} />
           {t.toolbar.redo}
         </button>
         <button
@@ -69,5 +70,25 @@ export function Toolbar({ editor }: { editor: Editor }) {
         </button>
       </div>
     </div>
+  )
+}
+
+function Icon({ paths }: { paths: readonly string[] }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="18"
+      height="18"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      {paths.map((d) => (
+        <path key={d} d={d} />
+      ))}
+    </svg>
   )
 }
