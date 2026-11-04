@@ -36,6 +36,9 @@ export function App({ editor }: { editor: Editor }) {
             この環境では作品を保存できません。URL をブックマークすると作業を再開できます。
           </p>
         )}
+        <a class="demo-link" href="./demo/">
+          遊ぶ画面の見本
+        </a>
       </header>
       {notice && (
         <div class="notice" role="alert">

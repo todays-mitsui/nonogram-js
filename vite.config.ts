@@ -2,7 +2,7 @@ import { resolve } from 'node:path'
 import preact from '@preact/preset-vite'
 import { defineConfig } from 'vitest/config'
 
-// GitHub Pages のサイト全体(トップページ・エディタ)を作る。
+// GitHub Pages のサイト全体(トップ = エディタ、旧 /editor/ の転送、デモ)を作る。
 // player.js は vite.player.config.ts で別にビルドし、dist/player/v1/ に足す。
 export default defineConfig({
   base: '/nonogram-js/',

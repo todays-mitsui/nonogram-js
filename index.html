@@ -3,14 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nonogram-js</title>
+    <title>ノノグラム エディタ</title>
+    <meta
+      name="description"
+      content="ノノグラムの作問エディタ。作った問題は、タグを1行貼るだけでブログなどで遊べるようになる。"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="ノノグラム エディタ" />
+    <meta
+      property="og:description"
+      content="ノノグラムの作問エディタ。作った問題は、タグを1行貼るだけでブログなどで遊べるようになる。"
+    />
+    <meta property="og:url" content="https://todays-mitsui.github.io/nonogram-js/" />
+    <meta property="og:image" content="https://todays-mitsui.github.io/nonogram-js/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- WebMCP のオリジントライアル(todays-mitsui.github.io、期限 2027-03-30)。期限は .github/workflows/origin-trial.yml が見張る -->
+    <meta
+      http-equiv="origin-trial"
+      content="Agq4DqCQUbm+CPjTvzvTCk78Qa5md+ofLae4kIjIIBUgE0VJDmq90+gQPn95Ir8bRx4yFh2mv4Tg2gfLiSvg3AcAAABXeyJvcmlnaW4iOiJodHRwczovL3RvZGF5cy1taXRzdWkuZ2l0aHViLmlvOjQ0MyIsImZlYXR1cmUiOiJXZWJNQ1AiLCJleHBpcnkiOjE4MDYzNjQ4MDB9"
+    />
   </head>
   <body>
-    <h1>nonogram-js</h1>
-    <p>ノノグラムを作問し、タグを貼るだけで遊べるようにするライブラリとエディタ(準備中)。</p>
-    <ul>
-      <li><a href="./editor/">エディタ</a></li>
-      <li><a href="./demo/">デモ(プレイモード)</a></li>
-    </ul>
+    <div id="app"></div>
+    <script type="module" src="/src/editor/main.tsx"></script>
   </body>
 </html>

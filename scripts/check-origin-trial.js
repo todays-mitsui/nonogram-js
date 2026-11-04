@@ -1,9 +1,9 @@
-// editor/index.html のオリジントライアルのトークンの期限を読む。
+// index.html のオリジントライアルのトークンの期限を読む。
 // 期限まで DAYS 日を切っていたら、GitHub Actions の出力 `expiring=true` を書く。
 import { appendFileSync, readFileSync } from 'node:fs'
 
 const DAYS = 30
-const html = readFileSync('editor/index.html', 'utf8')
+const html = readFileSync('index.html', 'utf8')
 const tokens = [...html.matchAll(/http-equiv="origin-trial"\s+content="([^"]+)"/g)].map((m) => m[1])
 const now = Date.now()
 let expiring = false

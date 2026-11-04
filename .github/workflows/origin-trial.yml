@@ -27,5 +27,5 @@ jobs:
         run: |
           title='オリジントライアルのトークンの期限が近い'
           if [ -z "$(gh issue list --state open --search "in:title $title" --json number --jq '.[].number')" ]; then
-            gh issue create --title "$title" --body "$(printf '%s\n\n%s\n' "$SUMMARY" 'トークンを更新して editor/index.html の <meta http-equiv="origin-trial"> を差し替える。WebMCP が正式に出荷されていればトークンを外す。')"
+            gh issue create --title "$title" --body "$(printf '%s\n\n%s\n' "$SUMMARY" 'トークンを更新して index.html の <meta http-equiv="origin-trial"> を差し替える。WebMCP が正式に出荷されていればトークンを外す。')"
           fi

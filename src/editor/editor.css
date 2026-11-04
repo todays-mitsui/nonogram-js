@@ -122,6 +122,10 @@ code {
 .work-title {
   flex: 1 1 200px;
 }
+.demo-link {
+  font-size: 13px;
+  color: var(--muted);
+}
 .work-title input {
   width: 100%;
   font-weight: 600;

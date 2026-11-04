@@ -88,7 +88,7 @@
 
 ## Phase 3: エディタ(MVP)
 
-- [x] 画面の骨組み(GitHub Pages の `/editor/`)
+- [x] 画面の骨組み(GitHub Pages のトップ `/`。旧 `/editor/` は転送)
 - [x] `editor/commands.ts`: 状態変更をすべてコマンドにする(UI と WebMCP で共有、アンドゥの単位)。UI より先に作る
 - [x] サイズ変更(枠外のマスを保持)
 - [x] パレット編集(1〜16 色。追加・削除・並べ替え・値の変更、`PaletteIndex` の振り直し)
@@ -111,7 +111,7 @@
 - [x] `inputSchema` と `description`(英語)を書き、`annotations` を付ける
 - [ ] エージェントから実際に作問させて、description の分かりやすさを確かめる(Chrome)
 - [x] Phase 4 のソルバーができたら `check_uniqueness` を追加
-- [x] オリジントライアルに登録し、トークンを `/editor/` の `<meta>` に入れる(期限 2027-03-30)
+- [x] オリジントライアルに登録し、トークンをエディタの `<meta>` に入れる(期限 2027-03-30)
 - [x] トークンの期限を記録し、更新を忘れない仕組み(`.github/workflows/origin-trial.yml` が毎週見て、30 日前を切ったら Issue を立てる)
 
 ## Phase 4: 品質と公開

@@ -34,7 +34,7 @@
 
 ```
 ┌──────────── GitHub Pages ─────────────┐
-│  /editor/          作問モード (Editor)   │
+│  /                 作問モード (Editor)   │
 │  /player/v1/player.js   プレイモード      │ ← 埋め込み先から読み込まれる
 └──────────────────────────────────────┘
         │ 書き出し(タグをコピー)
@@ -316,7 +316,7 @@ GitHub Pages で公開する単独の Web アプリ。
 
 #### オリジントライアル
 
-- Chrome のオリジントライアルに登録し、公開版のエディタでも有効にする。トークンは `/editor/` の HTML に `<meta http-equiv="origin-trial">` で入れる
+- Chrome のオリジントライアルに登録し、公開版のエディタでも有効にする。トークンはエディタ(サイトのトップ `/`)の HTML に `<meta http-equiv="origin-trial">` で入れる
 - トークンはオリジン `todays-mitsui.github.io` 単位で、同じアカウントの他の Pages にも効く(他のページは WebMCP を呼ばないので影響はない)
 - トークンには期限がある。切れても機能検出で無効になるだけで、エディタは壊れない
 - WebMCP が正式に出荷されたらトークンを外す
@@ -374,10 +374,12 @@ src/
     commands.ts    状態を変えるコマンド(UI と WebMCP で共有、アンドゥの単位)
     webmcp.ts      WebMCP のツール登録
 docs/        ドキュメント
-index.html   サイトのトップページ
+index.html   エディタの HTML(サイトのトップ `/`)。OG 画像は public/og.png
 editor/
-  index.html エディタの HTML(/editor/)
-vite.config.ts         サイト(トップページ・エディタ)のビルドとテストの設定
+  index.html 旧 URL(/editor/)からトップへの転送
+demo/
+  index.html プレイモードの見本(エディタのヘッダーから控えめにリンク)
+vite.config.ts         サイト(エディタ・デモ)のビルドとテストの設定
 vite.player.config.ts  player.js のビルド設定(IIFE、dist/player/v1/player.js)
 ```
 
