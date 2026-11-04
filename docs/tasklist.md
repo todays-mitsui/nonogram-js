@@ -7,7 +7,7 @@
 - [x] 進捗コードの形式を決め、spec/PROGRESS.md に移す(GLOSSARY Open Question 1 を閉じる)
 - [x] PuzzleId の正規形を決め、spec/PROGRESS.md に移す → 色数は含めない
 - [x] 埋め込みタグの仕様を spec/EMBED.md として切り出す
-- [ ] はてなブログで `<div class="todays-mitsui__nonogram" data-solution>` + `<script>` が残るか、各編集モード・AMP・一覧ページで確認する(Open Question 1)
+- [x] はてなブログで `<div class="todays-mitsui__nonogram" data-solution>` + `<script>` が残るか、各編集モード・AMP・一覧ページで確認する(Open Question 1)→ 2026-11-04 に動作を確認
 - [x] 一意解チェックの基準を決める → ラインソルバー + バックトラックの4段階表示
 - [x] リポジトリ名(= Pages の URL)を確定する → `nonogram-js`
 - [x] 独自ドメインを使うか決める → 使わない(github.io のまま。アカウント名・リポジトリ名を変えない)
@@ -80,7 +80,7 @@
 
 ### v1 公開(ここから互換を守る)
 
-- [ ] はてなブログの実記事で動作確認(PC / スマホ / 一覧ページ、各編集モード)
+- [x] はてなブログの実記事で動作確認(PC / スマホ / 一覧ページ、各編集モード)
 - [ ] スマホ実機でタッチ操作を確認(ストローク、方向の固定、スクロールとの干渉、ダイアログ)
 - [ ] 30x30 など大きな問題で、16px のマスに2桁のヒントが窮屈な件を見直す
 - [ ] 主要ブラウザでの動作確認(Chrome / Safari iOS / Firefox)
