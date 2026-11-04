@@ -61,26 +61,28 @@
 
 ## Phase 2: プレイモード(MVP)
 
-- [ ] `render/`: Canvas でマス領域・ヒント領域・罫線・区切り線を描画(hi-DPI 対応)
-- [ ] レイアウト: 親の幅 × `aspectRatio` でウィジェットの大きさを決め、キャンバスに収まる `cellSize`(16〜40px)を計算、`ResizeObserver`、下限を割ったらキャンバス内でスクロール
-- [ ] `data-aspect-ratio` の読み取り(省略時・不正値は `1:1`)
-- [ ] 罫線表示(`showGridLines`)の切り替えボタン(非表示時はバツも隠す)
-- [ ] ポインタ操作: 主操作・副操作・ストローク(プレイモードは最初に動いた向きに固定)、`touch-action: none`
-- [ ] ツールバー(Shadow DOM 内の DOM、キャンバスの下)、モノクロ / カラーで候補を切り替え
-- [ ] `satisfied` のグレーアウト、`solved` の判定と完成表示(バツを消してロック、ヒント・罫線を薄く、「解けました」、リセットだけ可)
-- [ ] ギブアップ(`revealed`)、リセット(`revealed` も解除)。確認は Shadow DOM 内の `<dialog>`
-- [ ] アンドゥ / リドゥ
-- [ ] 進捗の自動保存と復元(localStorage / `crypto.subtle` が使えない環境のフォールバック)
-- [ ] `player.js` エントリ: EMBED.md のマウント手順(`DOMContentLoaded` 待ち、`MutationObserver`、取り除かれたら監視を解除)、二重読み込み対策、`window.TodaysMitsuiNonogram`(`version` / `mount`)、Shadow DOM は `open`
-- [ ] 不正な正解図コードのエラー表示(README §4.6 の不正条件ごとの理由)
-- [ ] 非対応ブラウザ(`DecompressionStream` の `deflate-raw` なし)の検出と表示
-- [ ] ダークモード(マス領域の背景は明るいまま)
-- [ ] IIFE 単一ファイルでビルド、`/player/v1/player.js` に配置、サイズ確認(gzip 30 KB 以下)
-- [ ] 手書きの埋め込みタグを置いたデモページ
+- [x] `render/`: Canvas でマス領域・ヒント領域・罫線・区切り線を描画(hi-DPI 対応)
+- [x] レイアウト: 親の幅 × `aspectRatio` でウィジェットの大きさを決め、キャンバスに収まる `cellSize`(16〜40px)を計算、`ResizeObserver`、下限を割ったらキャンバス内でスクロール
+- [x] `data-aspect-ratio` の読み取り(省略時・不正値は `1:1`)
+- [x] 罫線表示(`showGridLines`)の切り替えボタン(非表示時はバツも隠す)
+- [x] ポインタ操作: 主操作・副操作・ストローク(プレイモードは最初に動いた向きに固定)、`touch-action: none`
+- [x] ツールバー(Shadow DOM 内の DOM、キャンバスの下)、モノクロ / カラーで候補を切り替え
+- [x] `satisfied` のグレーアウト、`solved` の判定と完成表示(バツを消してロック、ヒント・罫線を薄く、「解けました」、リセットだけ可)
+- [x] ギブアップ(`revealed`)、リセット(`revealed` も解除)。確認は Shadow DOM 内の `<dialog>`
+- [x] アンドゥ / リドゥ
+- [x] 進捗の自動保存と復元(localStorage / `crypto.subtle` が使えない環境のフォールバック)
+- [x] `player.js` エントリ: EMBED.md のマウント手順(`DOMContentLoaded` 待ち、`MutationObserver`、取り除かれたら監視を解除)、二重読み込み対策、`window.TodaysMitsuiNonogram`(`version` / `mount`)、Shadow DOM は `open`
+- [x] 不正な正解図コードのエラー表示(README §4.6 の不正条件ごとの理由)
+- [x] 非対応ブラウザ(`DecompressionStream` の `deflate-raw` なし)の検出と表示
+- [x] ダークモード(マス領域の背景は明るいまま)
+- [x] IIFE 単一ファイルでビルド、`/player/v1/player.js` に配置、サイズ確認(gzip 30 KB 以下)
+- [x] 手書きの埋め込みタグを置いたデモページ
 
 ### v1 公開(ここから互換を守る)
 
 - [ ] はてなブログの実記事で動作確認(PC / スマホ / 一覧ページ、各編集モード)
+- [ ] スマホ実機でタッチ操作を確認(ストローク、方向の固定、スクロールとの干渉、ダイアログ)
+- [ ] 30x30 など大きな問題で、16px のマスに2桁のヒントが窮屈な件を見直す
 - [ ] 主要ブラウザでの動作確認(Chrome / Safari iOS / Firefox)
 - [ ] 埋め込みタグの仕様(spec/EMBED.md)・正解図コード・保存キーを凍結し、最初の記事に貼る
 
