@@ -103,12 +103,12 @@
 
 ## Phase 3.5: エディタの WebMCP 対応
 
-- [ ] `core/`: 行文字列 ⇄ `Grid<empty | PaletteIndex>` の変換(`.`、`1`〜`9`、`a`〜`g`、`-`)
-- [ ] `editor/webmcp.ts`: 機能検出(`document.modelContext`)と `registerTool`、`AbortSignal` でまとめて解除
-- [ ] 読み取り系ツール: `get_editor_state`、`export_embed_tag`
-- [ ] 書き込み系ツール: `set_size`、パレット操作4種、`draw_rows`、`fill_cells`、`clear`、`import_code`、`undo` / `redo`
-- [ ] 不正入力で状態を変えずにエラーを返すことのテスト(ツールごと)
-- [ ] `inputSchema` と `description`(英語)を書き、`annotations` を付ける
+- [x] `core/`: 行文字列 ⇄ `Grid<empty | PaletteIndex>` の変換(`.`、`1`〜`9`、`a`〜`g`、`-`)
+- [x] `editor/webmcp.ts`: 機能検出(`document.modelContext`)と `registerTool`、`AbortSignal` でまとめて解除
+- [x] 読み取り系ツール: `get_editor_state`、`export_embed_tag`
+- [x] 書き込み系ツール: `set_size`、パレット操作4種、`draw_rows`、`fill_cells`、`clear`、`import_code`、`undo` / `redo`
+- [x] 不正入力で状態を変えずにエラーを返すことのテスト(ツールごと)
+- [x] `inputSchema` と `description`(英語)を書き、`annotations` を付ける
 - [ ] エージェントから実際に作問させて、description の分かりやすさを確かめる(Chrome)
 - [ ] Phase 4 のソルバーができたら `check_uniqueness` を追加
 - [ ] オリジントライアルに登録し、トークンを `/editor/` の `<meta>` に入れる

@@ -291,18 +291,20 @@ GitHub Pages で公開する単独の Web アプリ。
 
 | ツール | 種別 | 入力 | 内容 |
 |---|---|---|---|
-| `get_editor_state` | 読み取り | — | サイズ・パレット・正解図(可視領域の行文字列)・行ヒント / 列ヒント・作問側の保存の正解図コード・枠外のマスがあるか |
+| `get_editor_state` | 読み取り | — | 作品名・サイズ・パレット(表示番号と色の値)・正解図(可視領域の行文字列)・行ヒント / 列ヒント・枠外のマスがあるか・アンドゥ / リドゥできるか |
 | `set_size` | 書き込み | `width`, `height` | サイズ変更。枠外のマスは保持する(UI と同じ) |
 | `add_color` / `update_color` / `remove_color` / `move_color` | 書き込み | 色の値・表示番号 | パレット操作。`PaletteIndex` の振り直しはエディタが行う。`remove_color` で消えた色のマスは背景になる |
 | `draw_rows` | 書き込み | `x`, `y`, `rows: string[]` | `(x, y)` を左上として行文字列を書き込む。可視領域からはみ出したらエラー |
 | `fill_cells` | 書き込み | `cells: {x, y}[]`, `color`(表示番号、`0` = 背景) | 指定したマスを1色で塗る / 消す |
 | `clear` | 書き込み | — | 全マスを背景にする(枠外も含む) |
-| `import_code` | 書き込み | `code` | 正解図コードまたは埋め込みタグを読み込み、作業を置き換える |
-| `export_embed_tag` | 読み取り | `aspectRatio`(省略可、`1:1`) | 書き出しの埋め込みタグと、切り抜いた正解図コードを返す。クリップボードにはコピーしない(コピーは作問者が UI で行う) |
+| `import_code` | 書き込み | `code` | 正解図コードまたは埋め込みタグを、新しい作品として開く。今の作品は作品の一覧に残る(UI の読み込みと同じ) |
+| `export_embed_tag` | 読み取り | `aspect_ratio`(省略時は作品に選ばれている縦横比) | 書き出しの埋め込みタグと、切り抜いた正解図コードを返す。クリップボードにはコピーしない(コピーは作問者が UI で行う) |
 | `check_uniqueness` | 読み取り | — | 一意解チェックの結果(Phase 4 のソルバーができてから) |
 | `undo` / `redo` | 書き込み | — | UI のアンドゥ / リドゥと同じ |
 
-- 読み取り系には `annotations.readOnlyHint: true` を付ける。`import_code` と `clear` は作業を丸ごと置き換えるので `consequentialHint: true` を付ける(アンドゥで戻せるが、エージェント側に確認の機会を与える)
+- 読み取り系には `annotations.readOnlyHint: true` を付ける。`clear` は絵を丸ごと消すので `consequentialHint: true` を付ける(アンドゥで戻せるが、エージェント側に確認の機会を与える)
+- 入力の名前は snake_case(`color_number`、`aspect_ratio`)。色は表示番号(1 始まり)で指す
+- 書き込み系の結果と `get_editor_state` は JSON 文字列。エラーは `execute` が reject して返す(メッセージは英語)
 - ツールの `description` は英語で書く(エージェントの解釈が安定するため)。用語は GLOSSARY の識別子に揃える
 - 座標・サイズ・ブロックのルールなど、ノノグラムの前提は `get_editor_state` の `description` に短く書く
 
