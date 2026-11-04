@@ -4,7 +4,13 @@ import { derivePuzzle } from '../../core/clue'
 import { EMPTY, hasCellsOutsideFrame, visibleGrid } from '../../core/solution'
 import type { Operation } from '../../core/tool'
 import { draw, resizeCanvas } from '../../render/draw'
-import { cellAt, cellAtUnclamped, clueEntryAt, computeLayout, type Layout } from '../../render/layout'
+import {
+  cellAt,
+  cellAtUnclamped,
+  clueEntryAt,
+  computeLayout,
+  type Layout,
+} from '../../render/layout'
 import { darkTheme, lightTheme } from '../../render/theme'
 import type { Editor } from '../store'
 
