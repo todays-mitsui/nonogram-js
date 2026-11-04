@@ -223,28 +223,17 @@ code {
 }
 .size-form {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 8px;
-  align-items: flex-start;
-}
-.size-field {
-  display: flex;
-  gap: 4px;
   align-items: center;
 }
-.size-field label {
-  width: 2.5em;
+.size-form label {
+  display: flex;
+  gap: 6px;
+  align-items: center;
 }
-.size-field input {
-  width: 64px;
-  text-align: center;
-  -moz-appearance: textfield;
-  appearance: textfield;
-}
-.size-field input::-webkit-inner-spin-button,
-.size-field input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.size-form input {
+  width: 72px;
 }
 .palette {
   list-style: none;

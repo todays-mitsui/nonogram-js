@@ -49,66 +49,35 @@ export function SizePanel({ editor }: { editor: Editor }) {
           editor.apply((d) => setSize(d, Number(width), Number(height)))
         }}
       >
-        <SizeField label="幅" value={width} onChange={setWidth} />
-        <SizeField label="高さ" value={height} onChange={setHeight} />
+        <label>
+          幅
+          <input
+            type="number"
+            min={MIN_SIZE}
+            max={MAX_SIZE}
+            required
+            value={width}
+            onInput={(e) => setWidth(e.currentTarget.value)}
+          />
+        </label>
+        <span aria-hidden="true">×</span>
+        <label>
+          高さ
+          <input
+            type="number"
+            min={MIN_SIZE}
+            max={MAX_SIZE}
+            required
+            value={height}
+            onInput={(e) => setHeight(e.currentTarget.value)}
+          />
+        </label>
         <button type="submit">変更</button>
       </form>
       <p class="hint">
         {MIN_SIZE}〜{MAX_SIZE}。縮めても枠外のマスは消えません。
       </p>
     </section>
-  )
-}
-
-/**
- * サイズの入力欄。ブラウザ標準の ▲▼ は使わず、自前の −/＋ ボタンにする。
- * Chrome の ▲▼ は1クリックが長押しのリピート扱いになり、数回分進むことがあるため。
- */
-function SizeField({
-  label,
-  value,
-  onChange,
-}: {
-  label: string
-  value: string
-  onChange: (value: string) => void
-}) {
-  const step = (delta: number) => {
-    const n = Number.parseInt(value, 10)
-    const base = Number.isNaN(n) ? MIN_SIZE : n
-    onChange(String(Math.min(MAX_SIZE, Math.max(MIN_SIZE, base + delta))))
-  }
-  const n = Number(value)
-  return (
-    <div class="size-field">
-      <label for={`size-${label}`}>{label}</label>
-      <button
-        type="button"
-        aria-label={`${label}を1減らす`}
-        disabled={n <= MIN_SIZE}
-        onClick={() => step(-1)}
-      >
-        −
-      </button>
-      <input
-        id={`size-${label}`}
-        type="number"
-        inputMode="numeric"
-        min={MIN_SIZE}
-        max={MAX_SIZE}
-        required
-        value={value}
-        onInput={(e) => onChange(e.currentTarget.value)}
-      />
-      <button
-        type="button"
-        aria-label={`${label}を1増やす`}
-        disabled={n >= MAX_SIZE}
-        onClick={() => step(1)}
-      >
-        ＋
-      </button>
-    </div>
   )
 }
 
