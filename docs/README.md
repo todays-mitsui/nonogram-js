@@ -323,7 +323,7 @@ GitHub Pages で公開する単独の Web アプリ。
 
 | localStorage のキー | 値 |
 |---|---|
-| `todays-mitsui/nonogram:editor:works` | 作品の一覧。`{ id, name, updatedAt, aspectRatio }[]` の JSON。`aspectRatio` は書き出しで最後に選んだ縦横比 |
+| `todays-mitsui/nonogram:editor:works` | 作品の一覧。`{ id, name, updatedAt, openedAt, aspectRatio }[]` の JSON。`openedAt` は最後に開いた日時、`aspectRatio` は書き出しで最後に選んだ縦横比 |
 | `todays-mitsui/nonogram:editor:work:<id>` | 作品の中身。作問側の保存の正解図コード |
 
 - `id` は作品を作ったときに `crypto.randomUUID()` で決める。名前の初期値は「無題 {作成日時}」
