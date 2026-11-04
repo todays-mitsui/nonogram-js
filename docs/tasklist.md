@@ -53,7 +53,7 @@
   - [x] 不正条件をすべてテストする
   - [x] エンコード時のデータ領域の切り詰め
 - [x] `core/solution.ts`: `Solution`、`Extent` の計算、`crop`
-- [ ] `core/clue.ts`: ヒントの導出(色付きブロック、空ライン = `[]`)、`satisfied` の判定
+- [x] `core/clue.ts`: ヒントの導出(色付きブロック、空ライン = `[]`)、`satisfied` の判定
 - [ ] `core/tool.ts`: `Tool`、`nextMark`、`Stroke`(プレイモード / 作問モード両方)
 - [ ] `core/progress.ts`: `encodeProgress` / `decodeProgress`、`PuzzleId`
   - [ ] PROGRESS.md の例をテストケースにする(ハートの PuzzleId、進捗コード)
