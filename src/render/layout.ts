@@ -5,7 +5,7 @@
  * 列ヒント領域の高さは「いちばん項目の多い列の項目数」マス分(空ラインの「0」も1項目に数える)。
  */
 
-import type { Clue, Puzzle } from '../core/clue'
+import type { Clue, ClueEntry, Puzzle } from '../core/clue'
 import type { Point } from '../core/grid'
 
 export const MIN_CELL_SIZE = 16
@@ -68,4 +68,29 @@ export function cellAtUnclamped(layout: Layout, x: number, y: number): Point {
     x: Math.floor((x - layout.cellAreaX) / layout.cellSize),
     y: Math.floor((y - layout.cellAreaY) / layout.cellSize),
   }
+}
+
+/**
+ * キャンバス内の座標にあるヒント項目。項目が右(下)寄せで並ぶのは draw と同じ。
+ * ヒント領域の外、項目のない場所、空ラインの「0」なら null。
+ */
+export function clueEntryAt(
+  layout: Layout,
+  puzzle: Puzzle,
+  x: number,
+  y: number,
+): ClueEntry | null {
+  const s = layout.cellSize
+  const cx = Math.floor((x - layout.cellAreaX) / s)
+  const cy = Math.floor((y - layout.cellAreaY) / s)
+  // 行ヒント: マス領域の左。cx は -1(マス領域のすぐ左)から負に数える
+  if (cx < 0 && cy >= 0 && cy < puzzle.size.height) {
+    const clue = puzzle.rowClues[cy] as Clue
+    return clue[clue.length + cx] ?? null
+  }
+  if (cy < 0 && cx >= 0 && cx < puzzle.size.width) {
+    const clue = puzzle.columnClues[cx] as Clue
+    return clue[clue.length + cy] ?? null
+  }
+  return null
 }

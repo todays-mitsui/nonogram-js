@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { derivePuzzle } from '../core/clue'
 import { Grid } from '../core/grid'
 import { createSolution, EMPTY, type SolutionCell } from '../core/solution'
-import { cellAt, computeLayout, MAX_CELL_SIZE, MIN_CELL_SIZE } from './layout'
+import { cellAt, clueEntryAt, computeLayout, MAX_CELL_SIZE, MIN_CELL_SIZE } from './layout'
 
 const _ = EMPTY
 // 行ヒントは最大2項目、列ヒントは最大1項目
@@ -54,5 +54,42 @@ describe('cellAt', () => {
     expect(cellAt(layout, puzzle, 59, 40)).toBeNull()
     expect(cellAt(layout, puzzle, 70, 29)).toBeNull()
     expect(cellAt(layout, puzzle, 180, 40)).toBeNull()
+  })
+})
+
+describe('clueEntryAt', () => {
+  const colored = derivePuzzle(
+    createSolution(
+      Grid.fromRows<SolutionCell>([
+        [0, 1, _],
+        [_, _, _],
+        [1, 1, 0],
+      ]),
+    ),
+    ['#000', '#f00'],
+  )
+  // 行ヒント最大2項目・列ヒント最大2項目、cellSize 20 → マス領域は (40, 40) から
+  const layout = computeLayout(colored, { width: 100, height: 100 })
+
+  it('行ヒントは右寄せで並ぶ', () => {
+    expect(layout.cellSize).toBe(20)
+    // 1行目は [黒1, 赤1]
+    expect(clueEntryAt(layout, colored, 10, 50)).toEqual({ length: 1, paletteIndex: 0 })
+    expect(clueEntryAt(layout, colored, 30, 50)).toEqual({ length: 1, paletteIndex: 1 })
+    // 3行目は [赤2, 黒1]
+    expect(clueEntryAt(layout, colored, 30, 90)).toEqual({ length: 1, paletteIndex: 0 })
+  })
+
+  it('列ヒントは下寄せで並ぶ', () => {
+    // 2列目は [赤1, 赤1]、3列目は [黒1] だけ
+    expect(clueEntryAt(layout, colored, 70, 10)).toEqual({ length: 1, paletteIndex: 1 })
+    expect(clueEntryAt(layout, colored, 90, 30)).toEqual({ length: 1, paletteIndex: 0 })
+    expect(clueEntryAt(layout, colored, 90, 10)).toBeNull()
+  })
+
+  it('空ライン・マス領域・左上の角は null', () => {
+    expect(clueEntryAt(layout, colored, 30, 70)).toBeNull()
+    expect(clueEntryAt(layout, colored, 50, 50)).toBeNull()
+    expect(clueEntryAt(layout, colored, 10, 10)).toBeNull()
   })
 })

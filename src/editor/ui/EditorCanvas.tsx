@@ -4,7 +4,7 @@ import { derivePuzzle } from '../../core/clue'
 import { EMPTY, hasCellsOutsideFrame, visibleGrid } from '../../core/solution'
 import type { Operation } from '../../core/tool'
 import { draw, resizeCanvas } from '../../render/draw'
-import { cellAt, cellAtUnclamped, computeLayout, type Layout } from '../../render/layout'
+import { cellAt, cellAtUnclamped, clueEntryAt, computeLayout, type Layout } from '../../render/layout'
 import { darkTheme, lightTheme } from '../../render/theme'
 import type { Editor } from '../store'
 
@@ -69,7 +69,11 @@ export function EditorCanvas({ editor }: { editor: Editor }) {
       if (e.button !== 0 && e.button !== 2) return
       const { x, y } = position(e)
       const cell = cellAt(layout, state().puzzle, x, y)
-      if (!cell) return
+      if (!cell) {
+        const entry = e.button === 0 ? colorClueAt(x, y) : null
+        if (entry) editor.tool.value = { kind: 'paint', paletteIndex: entry.paletteIndex }
+        return
+      }
       e.preventDefault()
       const operation: Operation =
         e.button === 2 || e.altKey || e.ctrlKey || e.shiftKey ? 'secondary' : 'primary'
@@ -77,9 +81,20 @@ export function EditorCanvas({ editor }: { editor: Editor }) {
       canvas.setPointerCapture(e.pointerId)
       editor.history.beginStroke(cell, operation, editor.tool.value)
     }
+    /** カラー問題のヒント項目。タップするとその色の塗りツールにする。 */
+    const colorClueAt = (x: number, y: number) => {
+      const puzzle = state().puzzle
+      if (!layout || puzzle.palette.length < 2) return null
+      return clueEntryAt(layout, puzzle, x, y)
+    }
     const move = (e: PointerEvent) => {
-      if (e.pointerId !== pointerId || !layout) return
+      if (!layout) return
       const { x, y } = position(e)
+      if (pointerId === null) {
+        canvas.style.cursor = colorClueAt(x, y) ? 'pointer' : ''
+        return
+      }
+      if (e.pointerId !== pointerId) return
       editor.history.strokeTo(cellAtUnclamped(layout, x, y))
     }
     const up = (e: PointerEvent) => {

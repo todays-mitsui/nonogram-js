@@ -10,7 +10,7 @@ import { availableTools, type Operation, type Tool } from '../core/tool'
 import type { Puzzle } from '../core/clue'
 import { player as t } from '../i18n/ja'
 import { draw, resizeCanvas } from '../render/draw'
-import { cellAt, cellAtUnclamped, computeLayout, type Layout } from '../render/layout'
+import { cellAt, cellAtUnclamped, clueEntryAt, computeLayout, type Layout } from '../render/layout'
 import { darkTheme, lightTheme } from '../render/theme'
 import { PlayerState, type Change } from './state'
 import type { ProgressStore } from './storage'
@@ -190,7 +190,12 @@ export class Widget {
       if (e.button !== 0 && e.button !== 2) return
       const { x, y } = position(e)
       const cell = cellAt(this.#layout, this.#state.puzzle, x, y)
-      if (!cell) return
+      if (!cell) {
+        // カラー問題では、ヒント項目をタップするとその色の塗りツールにする
+        const entry = e.button === 0 ? this.#colorClueAt(x, y) : null
+        if (entry) this.#state.setTool({ kind: 'paint', paletteIndex: entry.paletteIndex })
+        return
+      }
       e.preventDefault()
       const operation: Operation =
         e.button === 2 || e.altKey || e.ctrlKey || e.shiftKey ? 'secondary' : 'primary'
@@ -199,8 +204,13 @@ export class Widget {
       this.#state.beginStroke(cell, operation)
     })
     canvas.addEventListener('pointermove', (e) => {
-      if (e.pointerId !== this.#pointerId || !this.#layout) return
+      if (!this.#layout) return
       const { x, y } = position(e)
+      if (this.#pointerId === null) {
+        canvas.style.cursor = this.#colorClueAt(x, y) ? 'pointer' : ''
+        return
+      }
+      if (e.pointerId !== this.#pointerId) return
       this.#state.strokeTo(cellAtUnclamped(this.#layout, x, y))
     })
     const end = (e: PointerEvent) => {
@@ -212,6 +222,13 @@ export class Widget {
     canvas.addEventListener('pointercancel', end)
     canvas.addEventListener('lostpointercapture', end)
     canvas.addEventListener('contextmenu', (e) => e.preventDefault())
+  }
+
+  /** カラー問題のヒント項目。モノクロ問題では色を選ぶ意味がないので null。 */
+  #colorClueAt(x: number, y: number) {
+    const puzzle = this.#state.puzzle
+    if (!this.#layout || puzzle.palette.length < 2) return null
+    return clueEntryAt(this.#layout, puzzle, x, y)
   }
 
   #relayout(): void {
