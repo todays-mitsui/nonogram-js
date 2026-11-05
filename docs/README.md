@@ -379,6 +379,9 @@ editor/
   index.html 旧 URL(/editor/)からトップへの転送
 demo/
   index.html プレイモードの見本(エディタのヘッダーから控えめにリンク)
+guide/
+  index.html 利用者向けの使い方(仕様は GitHub 上の docs/spec/ へリンク)
+README.md    リポジトリの入口(概要・使い方・仕様へのリンク・開発手順)
 vite.config.ts         サイト(エディタ・デモ)のビルドとテストの設定
 vite.player.config.ts  player.js のビルド設定(IIFE、dist/player/v1/player.js)
 ```

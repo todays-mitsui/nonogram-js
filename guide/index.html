@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>使い方 - ノノグラム エディタ</title>
+    <meta
+      name="description"
+      content="ノノグラム エディタで問題を作り、ブログに貼って遊んでもらうまでの使い方。"
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="使い方 - ノノグラム エディタ" />
+    <meta property="og:url" content="https://todays-mitsui.github.io/nonogram-js/guide/" />
+    <meta property="og:image" content="https://todays-mitsui.github.io/nonogram-js/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <style>
+      :root {
+        --bg: #f3f2ef;
+        --surface: #ffffff;
+        --text: #1f1f1e;
+        --muted: #62625e;
+        --border: #dedcd6;
+        --accent: #2563c9;
+        --code-bg: #ecebe6;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #141517;
+          --surface: #1f2023;
+          --text: #ececea;
+          --muted: #a6a6a1;
+          --border: #34363a;
+          --accent: #8db2f2;
+          --code-bg: #26282c;
+        }
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          system-ui,
+          -apple-system,
+          'Hiragino Sans',
+          'Noto Sans JP',
+          sans-serif;
+        line-height: 1.8;
+      }
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 24px 16px 80px;
+      }
+      a {
+        color: var(--accent);
+      }
+      .back {
+        font-size: 14px;
+      }
+      h1 {
+        font-size: 28px;
+        margin: 16px 0 8px;
+      }
+      h2 {
+        font-size: 20px;
+        margin: 48px 0 8px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+      }
+      h3 {
+        font-size: 16px;
+        margin: 24px 0 4px;
+      }
+      code {
+        font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+        font-size: 0.9em;
+        background: var(--code-bg);
+        padding: 1px 4px;
+        border-radius: 4px;
+      }
+      pre {
+        background: var(--code-bg);
+        padding: 12px 14px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      pre code {
+        background: none;
+        padding: 0;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 15px;
+      }
+      th,
+      td {
+        text-align: left;
+        vertical-align: top;
+        padding: 6px 8px;
+        border-bottom: 1px solid var(--border);
+      }
+      th {
+        white-space: nowrap;
+        font-weight: 600;
+      }
+      .example {
+        max-width: 420px;
+        margin: 16px 0;
+      }
+      .note {
+        color: var(--muted);
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a class="back" href="../">← エディタに戻る</a>
+      <h1>使い方</h1>
+      <p>
+        ノノグラム エディタは、ノノグラム(お絵かきロジック)の問題を作り、ブログなどの Web
+        ページに貼って遊んでもらうための道具です。貼るのは HTML
+        のタグ1組だけで、サーバーもアカウントも要りません。
+      </p>
+
+      <div class="example">
+        <div
+          class="todays-mitsui__nonogram"
+          data-solution="v2;10x10;10x10;#D23F31;#3C8D2F;#7A4B24;Y2AAAmYGJiYGMGCGMBgZGZmBGMwAA0IsBjgDxGSAsqAAAA"
+        >
+          ここにノノグラム(パズル)があります。JavaScript が動く環境で開くと遊べます。
+        </div>
+        <script src="../player/v1/player.js" defer></script>
+      </div>
+      <p class="note">↑ 貼るとこうなります(10x10、3色)。ここで解いてみることもできます。</p>
+
+      <h2>1. 問題を作る</h2>
+      <p><a href="../">エディタ</a>を開き、マスに絵を描きます。</p>
+      <ul>
+        <li>
+          <strong>描く</strong>: クリックやドラッグで塗ります。右クリック・Shift +
+          クリックで消せます
+        </li>
+        <li><strong>サイズ</strong>: 幅・高さとも 5〜100 マス。縮めても枠外の絵は消えません</li>
+        <li><strong>パレット</strong>: 16 色まで。2色以上にするとカラー問題になります</li>
+        <li>
+          <strong>一意解チェック</strong>:
+          ヒントの数字だけから答えが1つに決まるかを、描くたびに調べます。「別の答えがあります」と出たら、「別の答えを見る」で違うマスを確かめて直せます
+        </li>
+        <li><strong>テストプレイ</strong>: 解く側の画面で実際に解いてみられます</li>
+      </ul>
+      <h3>保存</h3>
+      <p>
+        保存ボタンはありません。描くたびに自動で、<strong>そのブラウザの中</strong>に保存します。「作品の一覧」から開き直したり、新しく作ったりできます。
+      </p>
+      <p>
+        別の端末やブラウザには引き継がれません。持ち出すときは、書き出した正解図コード(タグの
+        <code>data-solution</code>
+        の値)か、そのときの URL を控えてください。エディタの「読み込み」に貼ると続きから直せます。
+      </p>
+
+      <h2>2. ブログに貼る</h2>
+      <ol>
+        <li>エディタの「書き出し」で縦横比(縦長 3:4 / 正方形 1:1 / 横長 4:3)を選ぶ</li>
+        <li>「タグをコピー」を押す</li>
+        <li>ブログの記事の HTML に貼る</li>
+      </ol>
+      <p>コピーされるタグはこういう形です。</p>
+      <pre><code>&lt;div class="todays-mitsui__nonogram"
+     data-solution="v2;5x5;5x5;#000;Y2BkAEI4ADEZGIBCDAA"
+     data-aspect-ratio="1:1"&gt;ここにノノグラム(パズル)があります。JavaScript が動く環境で開くと遊べます。&lt;/div&gt;
+&lt;script src="https://todays-mitsui.github.io/nonogram-js/player/v1/player.js" defer&gt;&lt;/script&gt;</code></pre>
+      <ul>
+        <li>
+          <strong>貼る場所</strong>: HTML
+          をそのまま書ける編集画面に貼ってください。はてなブログなら「HTML 編集」か Markdown
+          モードです。見たまま編集の画面では <code>&lt;script&gt;</code>
+          が消されることがあります
+        </li>
+        <li>
+          <strong>1つの記事に何問でも</strong>: タグを続けて貼れます。<code>&lt;script&gt;</code>
+          が何回出てきても問題ありません
+        </li>
+        <li>
+          <strong>幅</strong>:
+          記事の本文の幅いっぱいに広がり、高さは縦横比で決まります。大きな問題で画面に収まらないときは、パズルの中でスクロールできます
+        </li>
+        <li>
+          <strong>タグの中の文</strong>: RSS リーダーなど JavaScript
+          が動かない場所で代わりに表示されます。書き換えても構いません
+        </li>
+      </ul>
+
+      <h2>3. 解く人の操作</h2>
+      <table>
+        <tbody>
+          <tr>
+            <th>塗る</th>
+            <td>タップ / クリック。ドラッグで続けて塗れます(最初に動かした向きの1列に揃います)</td>
+          </tr>
+          <tr>
+            <th>× を付ける</th>
+            <td>「×」ツールを選んでタップ。マウスなら右クリックか Shift + クリックでも付きます</td>
+          </tr>
+          <tr>
+            <th>色を選ぶ</th>
+            <td>
+              カラー問題では、ツールバーの色のほか、ヒントの数字をタップしてもその色になります
+            </td>
+          </tr>
+          <tr>
+            <th>戻す / やり直す</th>
+            <td>ツールバーのボタンで1操作ずつ</td>
+          </tr>
+          <tr>
+            <th>罫線</th>
+            <td>マスの罫線の表示を切り替えます</td>
+          </tr>
+          <tr>
+            <th>リセット / 答えを見る</th>
+            <td>確認のあと、盤面を消す / 答えを表示します</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        解きかけの盤面は、解く人のブラウザに自動で保存されます。ページを閉じても、同じブラウザで開けば続きから解けます。
+      </p>
+
+      <h2>困ったとき</h2>
+      <h3>パズルが表示されず、タグの中の文だけが出る</h3>
+      <p>
+        <code>&lt;script&gt;</code>
+        の行が消されているか、JavaScript が動かない場所で見ています。記事の HTML に
+        <code>&lt;script src="…/player.js"&gt;</code> が残っているかを確かめてください。
+      </p>
+      <h3>「正解図コードが壊れています」と出る</h3>
+      <p>
+        <code>data-solution</code>
+        の値が途中で切れたり書き換わったりしています。エディタからタグをコピーし直してください。
+      </p>
+      <h3>「このブラウザではノノグラムを表示できません」と出る</h3>
+      <p>ブラウザが古く、必要な機能がありません。新しいブラウザで開いてください。</p>
+
+      <h2>AI エージェントから使う</h2>
+      <p>
+        エディタは <a href="https://github.com/webmachinelearning/webmcp">WebMCP</a>
+        に対応しています。対応したブラウザでは、AI
+        エージェントがエディタの機能(盤面を描く、色を変える、一意解チェック、タグの書き出しなど)を直接呼べます。
+      </p>
+
+      <h2>仕様</h2>
+      <p>
+        タグや正解図コードは公開仕様です。エディタを使わずに、手で書いたりほかのツールで作ったりしても構いません。
+      </p>
+      <ul>
+        <li>
+          <a href="https://github.com/todays-mitsui/nonogram-js/blob/main/docs/spec/EMBED.md"
+            >埋め込みタグ仕様(EMBED.md)</a
+          >: タグの書き方と <code>player.js</code> の振る舞い
+        </li>
+        <li>
+          <a href="https://github.com/todays-mitsui/nonogram-js/blob/main/docs/spec/FORMAT.md"
+            >正解図コード仕様(FORMAT.md)</a
+          >: <code>data-solution</code> の値の形式
+        </li>
+        <li>
+          <a href="https://github.com/todays-mitsui/nonogram-js/blob/main/docs/spec/PROGRESS.md"
+            >進捗コード仕様(PROGRESS.md)</a
+          >: 解きかけの盤面の保存形式
+        </li>
+        <li>
+          <a href="https://github.com/todays-mitsui/nonogram-js/blob/main/docs/spec/GLOSSARY.md"
+            >用語集(GLOSSARY.md)</a
+          >
+        </li>
+      </ul>
+      <p class="note">
+        ソースコードは
+        <a href="https://github.com/todays-mitsui/nonogram-js">GitHub</a> にあります。
+      </p>
+    </main>
+  </body>
+</html>

@@ -122,8 +122,12 @@ code {
 .work-title {
   flex: 1 1 200px;
 }
-.demo-link {
+.header-links {
+  display: flex;
+  gap: 12px;
   font-size: 13px;
+}
+.header-links a {
   color: var(--muted);
 }
 .work-title input {
