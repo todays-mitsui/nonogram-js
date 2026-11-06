@@ -33,21 +33,46 @@ export const css = `
 @media (prefers-color-scheme: dark) {
   .widget { ${vars(widgetCss.dark)} }
 }
+/* 縦横比はここに指定する(widget.ts)。幅はウィジェットいっぱい、高さは幅 × 縦横比 */
 .canvas-area {
-  flex: 1 1 auto;
-  min-height: 0;
+  position: relative;
+  width: 100%;
+  flex: none;
+}
+.canvas-scroll {
+  position: absolute;
+  inset: 0;
   display: flex;
   overflow: auto;
 }
 canvas {
   display: block;
   margin: auto;
-  touch-action: none;
+  /* ヒント領域ではなぞってスクロールできるように。マス領域では widget.ts の touchstart で止める */
+  touch-action: pan-x pan-y;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
 }
-.status { margin: 0; font-size: 15px; font-weight: 600; text-align: center; }
+/* キャンバス領域の上端に重ねる。出ても消えてもウィジェットの高さは変わらない */
+.status {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: calc(100% - 16px);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--dialog-bg);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  pointer-events: none;
+}
 .status[hidden] { display: none; }
 .toolbar {
   display: flex;

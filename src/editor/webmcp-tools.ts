@@ -263,7 +263,8 @@ export function createTools(api: EditorApi): ToolDefinition[] {
           aspect_ratio: {
             type: 'string',
             enum: ['3:4', '1:1', '4:3'],
-            description: 'Widget aspect ratio. Defaults to the one chosen for this work.',
+            description:
+              'Aspect ratio of the puzzle canvas (excluding the toolbar). Defaults to the one chosen for this work.',
           },
         },
       },

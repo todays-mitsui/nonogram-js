@@ -42,7 +42,8 @@ export class Widget {
   readonly #store: ProgressStore | null
   readonly #canvas: HTMLCanvasElement
   readonly #ctx: CanvasRenderingContext2D
-  readonly #canvasArea: HTMLElement
+  /** キャンバス領域のうちスクロールする部分。大きさの基準にする。 */
+  readonly #canvasScroll: HTMLElement
   readonly #status: HTMLElement
   readonly #live: HTMLElement
   readonly #toolButtons: { tool: Tool; button: HTMLButtonElement }[] = []
@@ -68,8 +69,14 @@ export class Widget {
       'aria-label': `${puzzle.size.width}x${puzzle.size.height} のノノグラム`,
     })
     this.#ctx = this.#canvas.getContext('2d') as CanvasRenderingContext2D
-    this.#canvasArea = h('div', { class: 'canvas-area' }, [this.#canvas])
+    this.#canvasScroll = h('div', { class: 'canvas-scroll' }, [this.#canvas])
     this.#status = h('p', { class: 'status', hidden: '' })
+    // 縦横比はキャンバス領域に指定する。ツールバーの折り返しでパズルの大きさが変わらないように
+    const canvasArea = h(
+      'div',
+      { class: 'canvas-area', style: `aspect-ratio: ${options.aspectRatio.replace(':', ' / ')};` },
+      [this.#canvasScroll, this.#status],
+    )
     this.#live = h('div', { class: 'sr-only', 'aria-live': 'polite' })
 
     const toolGroup = h('div', { class: 'group', role: 'group', 'aria-label': 'ツール' })
@@ -89,29 +96,24 @@ export class Widget {
     this.#giveUpButton = button(t.toolbar.giveUp, () => void this.#confirmGiveUp())
 
     this.#dialog = new ConfirmDialog()
-    const widget = h(
-      'div',
-      { class: 'widget', style: `aspect-ratio: ${options.aspectRatio.replace(':', ' / ')};` },
-      [
-        this.#canvasArea,
-        this.#status,
-        h('div', { class: 'toolbar' }, [
-          h('div', { class: 'group' }, [
-            toolGroup,
-            h('div', { class: 'group' }, [this.#undoButton, this.#redoButton]),
-          ]),
-          h('div', { class: 'group' }, [this.#gridButton, resetButton, this.#giveUpButton]),
+    const widget = h('div', { class: 'widget' }, [
+      canvasArea,
+      h('div', { class: 'toolbar' }, [
+        h('div', { class: 'group' }, [
+          toolGroup,
+          h('div', { class: 'group' }, [this.#undoButton, this.#redoButton]),
         ]),
-        this.#live,
-        this.#dialog.element,
-      ],
-    )
+        h('div', { class: 'group' }, [this.#gridButton, resetButton, this.#giveUpButton]),
+      ]),
+      this.#live,
+      this.#dialog.element,
+    ])
     root.replaceChildren(style(), widget)
 
     this.#bindPointer()
     this.#state.subscribe((change) => this.#onChange(change))
     this.#resizeObserver = new ResizeObserver(() => this.#relayout())
-    this.#resizeObserver.observe(this.#canvasArea)
+    this.#resizeObserver.observe(this.#canvasScroll)
     this.#darkQuery = window.matchMedia('(prefers-color-scheme: dark)')
     this.#darkQuery.addEventListener('change', this.#scheduleDraw)
     this.#updateControls()
@@ -130,7 +132,7 @@ export class Widget {
   resume(): void {
     if (this.#active) return
     this.#active = true
-    this.#resizeObserver.observe(this.#canvasArea)
+    this.#resizeObserver.observe(this.#canvasScroll)
     this.#darkQuery.addEventListener('change', this.#scheduleDraw)
   }
 
@@ -215,6 +217,20 @@ export class Widget {
     canvas.addEventListener('pointercancel', end)
     canvas.addEventListener('lostpointercapture', end)
     canvas.addEventListener('contextmenu', (e) => e.preventDefault())
+    // touch-action はキャンバス全体にしか効かないので、マス領域で始まったタッチだけスクロールを止める。
+    // ヒント領域で始まったタッチはスクロールになる
+    canvas.addEventListener(
+      'touchstart',
+      (e) => {
+        const touch = e.touches[0]
+        if (!touch || !this.#layout || e.touches.length > 1) return
+        const rect = canvas.getBoundingClientRect()
+        const x = touch.clientX - rect.left
+        const y = touch.clientY - rect.top
+        if (cellAt(this.#layout, this.#state.puzzle, x, y)) e.preventDefault()
+      },
+      { passive: false },
+    )
   }
 
   /** カラー問題のヒント項目。モノクロ問題では色を選ぶ意味がないので null。 */
@@ -225,7 +241,7 @@ export class Widget {
   }
 
   #relayout(): void {
-    const area = this.#canvasArea
+    const area = this.#canvasScroll
     // スクロールバーの分を除いた大きさ
     const available = { width: area.clientWidth, height: area.clientHeight }
     if (available.width <= 0 || available.height <= 0) return
