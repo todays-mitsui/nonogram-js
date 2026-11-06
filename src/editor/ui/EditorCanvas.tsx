@@ -12,6 +12,7 @@ import {
   type Layout,
 } from '../../render/layout'
 import { darkTheme, lightTheme } from '../../render/theme'
+import { preventScrollOnCellArea } from '../../render/touch'
 import type { Editor } from '../store'
 
 /** 描いている絵と、そこから導出したヒントを、プレイモードと同じ見た目で表示する。 */
@@ -117,6 +118,7 @@ export function EditorCanvas({ editor }: { editor: Editor }) {
     canvas.addEventListener('pointercancel', up)
     canvas.addEventListener('lostpointercapture', up)
     canvas.addEventListener('contextmenu', noMenu)
+    const releaseTouch = preventScrollOnCellArea(canvas, () => ({ layout, puzzle: state().puzzle }))
     const observer = new ResizeObserver(render)
     observer.observe(area)
     dark.addEventListener('change', render)
@@ -133,6 +135,7 @@ export function EditorCanvas({ editor }: { editor: Editor }) {
       canvas.removeEventListener('pointercancel', up)
       canvas.removeEventListener('lostpointercapture', up)
       canvas.removeEventListener('contextmenu', noMenu)
+      releaseTouch()
     }
   }, [editor])
 

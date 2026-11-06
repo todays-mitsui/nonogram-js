@@ -183,7 +183,8 @@ code {
 .canvas-area canvas {
   display: block;
   margin: auto;
-  touch-action: none;
+  /* ヒント領域ではなぞってスクロールできるように。マス領域では render/touch.ts で止める */
+  touch-action: pan-x pan-y;
   user-select: none;
 }
 .toolbar {

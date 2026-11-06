@@ -48,7 +48,7 @@ export const css = `
 canvas {
   display: block;
   margin: auto;
-  /* ヒント領域ではなぞってスクロールできるように。マス領域では widget.ts の touchstart で止める */
+  /* ヒント領域ではなぞってスクロールできるように。マス領域では render/touch.ts で止める */
   touch-action: pan-x pan-y;
   user-select: none;
   -webkit-user-select: none;

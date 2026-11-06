@@ -6,6 +6,7 @@
 - 正解図コードの形式は [spec/FORMAT.md](spec/FORMAT.md)
 - 進捗コードとパズル ID の形式は [spec/PROGRESS.md](spec/PROGRESS.md)
 - 埋め込みタグの仕様は [spec/EMBED.md](spec/EMBED.md)
+- 表示の階層(プレイモード・作問モードそれぞれの、キャンバス・パズル領域などの入れ子)は [spec/LAYOUT.md](spec/LAYOUT.md)
 - TODO は [tasklist.md](tasklist.md)
 
 ---
@@ -122,7 +123,7 @@
   3. ヒント領域とマス領域がキャンバスに収まる最大の `cellSize` を求め、16〜40px に丸める。余白は中央寄せ
   4. 16px を割るときは 16px にし、キャンバスの中でスクロールさせる。マス領域ではなぞり操作がスクロールにならないので、スクロールはヒント領域かスクロールバーで行う
   - ズーム・全画面表示はしない
-- なぞり操作中にページがスクロールしないようにする。マス領域とヒント領域は1枚の canvas なので `touch-action` では分けられない。canvas には `touch-action: pan-x pan-y` を指定し、マス領域で始まったタッチだけ `touchstart` で `preventDefault` する(ヒント領域で始まったタッチはスクロールになる)
+- なぞり操作中にページがスクロールしないようにする。マス領域とヒント領域は1枚の canvas なので `touch-action` では分けられない。canvas には `touch-action: pan-x pan-y` を指定し、マス領域で始まったタッチだけ `touchstart` で `preventDefault` する(ヒント領域で始まったタッチはスクロールになる)。作問モードのキャンバスも同じ(`render/touch.ts` を共有)
 - 配色はライト / ダークの2種。`prefers-color-scheme` に従う。ダークでもマス領域の背景だけは常に明るいままにする(パレットは作問者が明るい背景で選んだ色なので、例えば黒1色の問題が見えなくならないように)。ダークにするのはヒント領域・ツールバー・操作ボタン・ダイアログ
 
 ### 4.3 進捗の保存

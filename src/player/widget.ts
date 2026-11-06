@@ -13,6 +13,7 @@ import { draw, resizeCanvas } from '../render/draw'
 import { iconElement, REDO_ICON, UNDO_ICON } from '../render/icons'
 import { cellAt, cellAtUnclamped, clueEntryAt, computeLayout, type Layout } from '../render/layout'
 import { darkTheme, lightTheme } from '../render/theme'
+import { preventScrollOnCellArea } from '../render/touch'
 import { PlayerState, type Change } from './state'
 import type { ProgressStore } from './storage'
 import { css } from './styles'
@@ -217,20 +218,7 @@ export class Widget {
     canvas.addEventListener('pointercancel', end)
     canvas.addEventListener('lostpointercapture', end)
     canvas.addEventListener('contextmenu', (e) => e.preventDefault())
-    // touch-action はキャンバス全体にしか効かないので、マス領域で始まったタッチだけスクロールを止める。
-    // ヒント領域で始まったタッチはスクロールになる
-    canvas.addEventListener(
-      'touchstart',
-      (e) => {
-        const touch = e.touches[0]
-        if (!touch || !this.#layout || e.touches.length > 1) return
-        const rect = canvas.getBoundingClientRect()
-        const x = touch.clientX - rect.left
-        const y = touch.clientY - rect.top
-        if (cellAt(this.#layout, this.#state.puzzle, x, y)) e.preventDefault()
-      },
-      { passive: false },
-    )
+    preventScrollOnCellArea(canvas, () => ({ layout: this.#layout, puzzle: this.#state.puzzle }))
   }
 
   /** カラー問題のヒント項目。モノクロ問題では色を選ぶ意味がないので null。 */
