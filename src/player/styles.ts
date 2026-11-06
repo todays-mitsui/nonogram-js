@@ -45,7 +45,7 @@ export const css = `
   display: flex;
   overflow: auto;
 }
-canvas {
+.puzzle-area {
   display: block;
   margin: auto;
   /* ヒント領域ではなぞってスクロールできるように。マス領域では render/touch.ts で止める */

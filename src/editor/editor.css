@@ -180,7 +180,7 @@ code {
   display: flex;
   overflow: auto;
 }
-.canvas-area canvas {
+.puzzle-area {
   display: block;
   margin: auto;
   /* ヒント領域ではなぞってスクロールできるように。マス領域では render/touch.ts で止める */

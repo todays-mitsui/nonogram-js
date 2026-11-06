@@ -41,9 +41,10 @@ export function renderError(root: ShadowRoot, title: string, detail: string): vo
 export class Widget {
   readonly #state: PlayerState
   readonly #store: ProgressStore | null
-  readonly #canvas: HTMLCanvasElement
+  /** パズル領域を描く <canvas> 要素。 */
+  readonly #puzzleArea: HTMLCanvasElement
   readonly #ctx: CanvasRenderingContext2D
-  /** キャンバス領域のうちスクロールする部分。大きさの基準にする。 */
+  /** キャンバスのうちスクロールする部分。パズル領域の大きさの基準にする。 */
   readonly #canvasScroll: HTMLElement
   readonly #status: HTMLElement
   readonly #live: HTMLElement
@@ -65,14 +66,15 @@ export class Widget {
     this.#state = new PlayerState(puzzle, options.solution, options.store?.initial)
     this.#store = options.store
 
-    this.#canvas = h('canvas', {
+    this.#puzzleArea = h('canvas', {
+      class: 'puzzle-area',
       role: 'img',
       'aria-label': `${puzzle.size.width}x${puzzle.size.height} のノノグラム`,
     })
-    this.#ctx = this.#canvas.getContext('2d') as CanvasRenderingContext2D
-    this.#canvasScroll = h('div', { class: 'canvas-scroll' }, [this.#canvas])
+    this.#ctx = this.#puzzleArea.getContext('2d') as CanvasRenderingContext2D
+    this.#canvasScroll = h('div', { class: 'canvas-scroll' }, [this.#puzzleArea])
     this.#status = h('p', { class: 'status', hidden: '' })
-    // 縦横比はキャンバス領域に指定する。ツールバーの折り返しでパズルの大きさが変わらないように
+    // 縦横比はキャンバスに指定する。ツールバーの折り返しでパズルの大きさが変わらないように
     const canvasArea = h(
       'div',
       { class: 'canvas-area', style: `aspect-ratio: ${options.aspectRatio.replace(':', ' / ')};` },
@@ -176,7 +178,7 @@ export class Widget {
   }
 
   #bindPointer(): void {
-    const canvas = this.#canvas
+    const canvas = this.#puzzleArea
     const position = (e: PointerEvent) => {
       const rect = canvas.getBoundingClientRect()
       return { x: e.clientX - rect.left, y: e.clientY - rect.top }
@@ -247,7 +249,7 @@ export class Widget {
     const layout = this.#layout
     if (!layout) return
     const dpr = window.devicePixelRatio || 1
-    resizeCanvas(this.#canvas, layout, dpr)
+    resizeCanvas(this.#puzzleArea, layout, dpr)
     const state = this.#state
     draw(
       this.#ctx,

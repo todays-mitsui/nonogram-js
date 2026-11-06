@@ -26,8 +26,8 @@ describe('computeLayout', () => {
     expect(layout.cellSize).toBe(30)
     expect(layout.cellAreaX).toBe(60)
     expect(layout.cellAreaY).toBe(30)
-    expect(layout.width).toBe(180)
-    expect(layout.height).toBe(120)
+    expect(layout.puzzleAreaWidth).toBe(180)
+    expect(layout.puzzleAreaHeight).toBe(120)
     expect(layout.overflows).toBe(false)
   })
 

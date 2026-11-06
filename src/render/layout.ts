@@ -1,5 +1,6 @@
 /**
- * キャンバスのレイアウト(README §4.2)。DOM に依存しない純粋な計算。
+ * パズル領域のレイアウト(docs/spec/LAYOUT.md)。DOM に依存しない純粋な計算。
+ * キャンバスに使える大きさを受け取り、その中に置くパズル領域(ヒント領域 + マス領域)の寸法を決める。
  *
  * ヒント項目1つにマス1つ分の場所を割り当てる。行ヒント領域の幅は「いちばん項目の多い行の項目数」マス分、
  * 列ヒント領域の高さは「いちばん項目の多い列の項目数」マス分(空ラインの「0」も1項目に数える)。
@@ -17,19 +18,19 @@ export interface Layout {
   readonly rowClueSlots: number
   /** 列ヒント領域の項目数(マス数)。 */
   readonly columnClueSlots: number
-  /** マス領域の左上(キャンバス内の CSS px)。 */
+  /** マス領域の左上(パズル領域の左上からの CSS px)。左はヒント領域の幅、上は列ヒント領域の高さと同じ。 */
   readonly cellAreaX: number
   readonly cellAreaY: number
-  /** キャンバス全体の大きさ(CSS px)。 */
-  readonly width: number
-  readonly height: number
-  /** 下限の cellSize でも収まらず、スクロールが要るか。 */
+  /** パズル領域の大きさ(CSS px)。<canvas> 要素の大きさになる。 */
+  readonly puzzleAreaWidth: number
+  readonly puzzleAreaHeight: number
+  /** 下限の cellSize でも収まらず、キャンバスの中でスクロールが要るか。 */
   readonly overflows: boolean
 }
 
 const slots = (clues: readonly Clue[]) => Math.max(1, ...clues.map((c) => c.length))
 
-/** `available` はキャンバスに使える大きさ(ウィジェットからツールバーなどを除いた残り)。 */
+/** `available` はキャンバスの大きさ(スクロールバーの分を除く)。 */
 export function computeLayout(
   puzzle: Puzzle,
   available: { width: number; height: number },
@@ -40,17 +41,17 @@ export function computeLayout(
   const rows = columnClueSlots + puzzle.size.height
   const fit = Math.floor(Math.min(available.width / columns, available.height / rows))
   const cellSize = Math.min(MAX_CELL_SIZE, Math.max(MIN_CELL_SIZE, fit))
-  const width = columns * cellSize
-  const height = rows * cellSize
+  const puzzleAreaWidth = columns * cellSize
+  const puzzleAreaHeight = rows * cellSize
   return {
     cellSize,
     rowClueSlots,
     columnClueSlots,
     cellAreaX: rowClueSlots * cellSize,
     cellAreaY: columnClueSlots * cellSize,
-    width,
-    height,
-    overflows: width > available.width || height > available.height,
+    puzzleAreaWidth,
+    puzzleAreaHeight,
+    overflows: puzzleAreaWidth > available.width || puzzleAreaHeight > available.height,
   }
 }
 

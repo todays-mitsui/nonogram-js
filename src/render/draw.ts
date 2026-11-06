@@ -26,12 +26,12 @@ export interface DrawState {
 
 /** キャンバスの大きさを layout と devicePixelRatio に合わせる。 */
 export function resizeCanvas(canvas: HTMLCanvasElement, layout: Layout, dpr: number): void {
-  const w = Math.round(layout.width * dpr)
-  const h = Math.round(layout.height * dpr)
+  const w = Math.round(layout.puzzleAreaWidth * dpr)
+  const h = Math.round(layout.puzzleAreaHeight * dpr)
   if (canvas.width !== w) canvas.width = w
   if (canvas.height !== h) canvas.height = h
-  canvas.style.width = `${layout.width}px`
-  canvas.style.height = `${layout.height}px`
+  canvas.style.width = `${layout.puzzleAreaWidth}px`
+  canvas.style.height = `${layout.puzzleAreaHeight}px`
 }
 
 export function draw(
@@ -41,7 +41,7 @@ export function draw(
   dpr: number,
 ): void {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-  ctx.clearRect(0, 0, layout.width, layout.height)
+  ctx.clearRect(0, 0, layout.puzzleAreaWidth, layout.puzzleAreaHeight)
   drawClues(ctx, layout, state)
   drawCells(ctx, layout, state)
   drawGridLines(ctx, layout, state)

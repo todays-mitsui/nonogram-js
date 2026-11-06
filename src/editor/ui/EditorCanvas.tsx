@@ -18,12 +18,12 @@ import type { Editor } from '../store'
 /** 描いている絵と、そこから導出したヒントを、プレイモードと同じ見た目で表示する。 */
 export function EditorCanvas({ editor }: { editor: Editor }) {
   const areaRef = useRef<HTMLDivElement>(null)
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const puzzleAreaRef = useRef<HTMLCanvasElement>(null)
   const doc = editor.doc.value
 
   useEffect(() => {
     const area = areaRef.current as HTMLDivElement
-    const canvas = canvasRef.current as HTMLCanvasElement
+    const canvas = puzzleAreaRef.current as HTMLCanvasElement
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
     const dark = window.matchMedia('(prefers-color-scheme: dark)')
     let layout: Layout | null = null
@@ -143,7 +143,12 @@ export function EditorCanvas({ editor }: { editor: Editor }) {
   return (
     <div class="canvas-column">
       <div class="canvas-area" ref={areaRef}>
-        <canvas ref={canvasRef} role="img" aria-label={`${width}x${height} の正解図とヒント`} />
+        <canvas
+          ref={puzzleAreaRef}
+          class="puzzle-area"
+          role="img"
+          aria-label={`${width}x${height} の正解図とヒント`}
+        />
       </div>
       {hasCellsOutsideFrame(doc.solution) && (
         <p class="hint">
